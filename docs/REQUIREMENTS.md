@@ -102,16 +102,19 @@ This system provides comprehensive job application tracking capabilities with th
 | FR-1 | Job Record Management | Add, edit, delete job applications with fields: company, position, source, job link, location, salary (optional). | High |
 | FR-2 | Multi-Round Progress Tracking | Track detailed hiring process with multiple rounds: each round includes type (Online Assessment, HR Screen, Technical Interview, Manager Interview, etc.), date/time, status (Scheduled, Completed, Passed, Rejected, Waiting), and personal notes/feedback. Support overall application status and round-by-round historical view. | High |
 | FR-3 | Job Requirements | Save job description or key requirements. | Medium |
-| FR-4 | Notes & Feedback | User can add personal notes and interview feedback. | Medium |
-| FR-5 | Search & Filter | Filter by company, status, date, tags. | High |
-| FR-6 | Reminders/Deadlines | Optional reminders for interviews or deadlines. | Medium |
+| FR-4 | AI Skills Extraction | Automatically extract required skills and technologies from job descriptions. | Medium |
+| FR-5 | Notes & Feedback | User can add personal notes and interview feedback. | Medium |
+| FR-6 | Search & Filter | Filter by company, status, date, tags. | High |
+| FR-7 | Reminders/Deadlines | Optional reminders for interviews or deadlines. | Medium |
 ### 4.2 Optional / Future Features
-| ID | Feature | Description |
-|---|---|---|
-| FR-7 | Calendar View | Visualize upcoming interviews. |
-| FR-8 | Email Parsing | Auto-extract job details from emails. |
-| FR-9 | AI Insights | Resume-job match score, interview tips. |
-| FR-10 | Multi-user Support | Enable account-based access. |
+| ID | Feature | Description | Priority |
+|---|---|---|---|
+| FR-8 | Calendar View | Visualize upcoming interviews. | Medium |
+| FR-9 | Email Parsing | Auto-extract job details from emails. | Medium |
+| FR-10 | AI Resume Matching | Analyze resume-job compatibility and suggest improvements. | Low |
+| FR-11 | AI Interview Preparation | Generate personalized interview questions and preparation materials based on job requirements. | Low |
+| FR-12 | Smart Progress Analytics | Provide insights on application patterns, success rates, and optimization suggestions. | Low |
+| FR-13 | Multi-user Support | Enable account-based access for career coaches and teams. | Low |
 
 ---
 
@@ -212,6 +215,38 @@ Round History:
 2. **Detailed Mode**: Expand all round information, suitable for comprehensive review
 3. **Edit Mode**: Allow adding/modifying round information and personal summaries
 
+### 8.3 AI Skills Extraction Interface (MVP+)
+
+**Auto-Extracted Skills Display:**
+```
+📋 Job Requirements Analysis (Auto-extracted from description)
+
+🛠️ Technical Skills Identified:
+├─ Languages: JavaScript, TypeScript, Python
+├─ Frameworks: React, Node.js, Express
+├─ Databases: PostgreSQL, Redis
+├─ Cloud/DevOps: AWS, Docker, Kubernetes
+└─ Tools: Git, Jira, Figma
+
+💼 Experience Level: Senior (5+ years mentioned)
+🏢 Work Arrangement: Remote-friendly, Hybrid options
+📍 Location: San Francisco, CA (Remote OK)
+
+[✏️ Edit Skills] [➕ Add Missing Skills] [🔄 Re-analyze]
+```
+
+**Skills Management Interface:**
+```
+🏷️ Skill Tags for this Position:
+#React #NodeJS #TypeScript #AWS #Docker #PostgreSQL #Senior
+
+Quick Actions:
+├─ 📊 Compare with my skills
+├─ 🎯 Mark as target skills to learn
+├─ 📝 Add to interview preparation notes
+└─ 🔍 Find similar positions
+```
+
 ---
 
 ## 9. Deployment & Distribution
@@ -233,32 +268,91 @@ Optional public demo (e.g., Render, Vercel + free DB).
 - Multi-round progress tracking with timeline interface
 - Local Docker deployment
 - Core search and filtering capabilities
+- **AI Skills Extraction**: Automatically parse job descriptions to extract required skills and technologies using local NLP libraries
 
 **Phase 2: Enhanced Features**
 - Calendar integration and reminders
 - Advanced tagging and categorization system
 - Import/Export functionality
 - Email parsing for job details extraction
+- **Basic AI Matching**: Keyword-based compatibility scoring between user skills and job requirements
+- **Interview Question Database**: Curated common interview questions based on job types and technologies
 
-**Phase 3: Intelligence & Analytics**
-- AI-powered job matching and insights
-- Resume-job compatibility scoring
-- Interview preparation recommendations
-- Skills gap analysis and learning suggestions
+**Phase 3: Advanced AI Intelligence**
+- **Smart Interview Preparation**: AI-generated personalized prep materials and question prediction
+- **Company Intelligence**: Automated company research and insights aggregation
+- **Skills Gap Analysis**: Advanced comparison of personal qualifications against market demands
+- **Application Pattern Analytics**: Success rate analysis and optimization recommendations
+- **Resume Optimization**: AI-driven resume suggestions tailored to specific positions
 
-**Phase 4: Commercial Expansion**
-- Multi-user SaaS version development
-- Advanced analytics dashboard
-- Career coach collaboration features
-- Enterprise-level security and compliance
+**Phase 4: Commercial Expansion & Advanced AI**
+- **Market Intelligence**: Industry trends, salary analysis, demand forecasting
+- **Career Path Planning**: Long-term skill development and growth recommendations
+- **Multi-user SaaS version**: Team collaboration with AI insights and analytics
+- **Enterprise Features**: Advanced reporting, bulk operations, team management
 
-### 10.2 Strategic Approach
+### 10.2 AI Implementation Strategy
+
+**Phase 1 - MVP AI (Skills Extraction Only):**
+```javascript
+// Technical Implementation Preview
+const skillsExtractor = {
+  categories: {
+    languages: ['JavaScript', 'Python', 'Java', 'TypeScript', 'Go', 'Rust', 'C++'],
+    frameworks: ['React', 'Vue', 'Angular', 'Node.js', 'Express', 'Django', 'Spring'],
+    databases: ['PostgreSQL', 'MongoDB', 'MySQL', 'Redis', 'Elasticsearch'],
+    cloud: ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform'],
+    tools: ['Git', 'Jenkins', 'Jira', 'Figma', 'Slack', 'Webpack']
+  },
+  
+  extract: (jobDescription) => {
+    // Simple pattern matching with context awareness
+    const text = jobDescription.toLowerCase();
+    const extracted = {};
+    
+    Object.keys(this.categories).forEach(category => {
+      extracted[category] = this.categories[category].filter(skill =>
+        this.findSkillInContext(text, skill.toLowerCase())
+      );
+    });
+    
+    return {
+      skills: extracted,
+      experienceLevel: this.extractExperienceLevel(text),
+      workType: this.extractWorkArrangement(text),
+      location: this.extractLocation(jobDescription)
+    };
+  }
+};
+```
+
+**Technology Approach:**
+- **Local Processing**: Use JavaScript NLP libraries (`natural.js`, `compromise.js`) for privacy
+- **No External Dependencies**: 100% offline functionality in MVP
+- **Expandable Architecture**: Design for future AI service integration
+- **User Control**: Allow manual editing and verification of extracted data
+
+**Phase 2+ - Enhanced AI:**
+- **Hybrid Approach**: Local processing for basic features, optional cloud AI for advanced analysis
+- **API Integration**: OpenAI GPT-4 API with user consent and privacy controls
+- **Vector Databases**: Semantic search and matching capabilities
+- **Web Scraping**: Automated company research and market data collection
+
+### 10.3 Strategic Approach
 
 **Dual-Track Strategy:**
-- **Open Source Track**: Maintain single-user local deployment version with core functionality
-- **Commercial Track**: Develop hosted multi-user SaaS for market validation and monetization
-- **Community Building**: Foster open-source community while exploring commercial opportunities
-- **Feature Differentiation**: Keep essential features open-source, premium features in hosted version
+- **Open Source Track**: Maintain single-user local deployment with core functionality and basic AI features
+- **Commercial Track**: Develop hosted multi-user SaaS with advanced AI capabilities for market validation
+- **Community Building**: Foster open-source community while exploring commercial AI opportunities
+- **Feature Differentiation**: 
+  - Open Source: Basic skills extraction, local processing
+  - Commercial: Advanced AI insights, company research, market analytics
+
+**AI Ethics and Privacy:**
+- **Privacy-First**: All MVP AI features work completely offline
+- **Transparent AI**: Clear indication when AI features are active
+- **User Control**: Easy opt-out from any AI processing
+- **Data Ownership**: Users maintain full control over their data and AI insights
 
 ---
 
@@ -270,7 +364,9 @@ Optional public demo (e.g., Render, Vercel + free DB).
 | User adoption | Medium | Provide clean UI, one-click deployment |
 | Maintenance overhead | Medium | Modular architecture, good documentation |
 | Feature complexity (multi-round tracking) | Medium | Phased implementation, user testing |
+| AI accuracy and reliability | Medium | Start with simple pattern matching, provide manual override options |
 | Commercial vs Open-Source balance | Medium | Clear feature differentiation strategy |
+| AI dependency and costs | Low | Local-first approach, optional cloud features |
 
 ---
 
